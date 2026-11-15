@@ -1,15 +1,31 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import (StaffViewSet, StaffDetailView, CategoryViewSet,TaskViewSet, DashboardView, SubmissionView)
+from django.urls import path
 
-router = DefaultRouter()
-router.register("staff", StaffViewSet, basename="staff")
-router.register("categories", CategoryViewSet, basename="category")
-router.register("tasks", TaskViewSet, basename="task")
+from .views import (
+    login_view,
+    dashboard_view,
+    staff_list,
+    staff_detail,
+    staff_details,
+    category_list,
+    category_detail,
+    task_list,
+    task_detail,
+    submit_view,
+)
 
 urlpatterns = [
-    path("dashboard/", DashboardView.as_view()),
-    path("staff/<int:id>/details/", StaffDetailView.as_view()),
-    path("submit/<str:token>/", SubmissionView.as_view()),
-    path("", include(router.urls)),
+    path("auth/login/", login_view, name="login"),
+    path("dashboard/", dashboard_view, name="dashboard"),
+
+    path("staff/", staff_list, name="staff_list"),
+    path("staff/<int:id>/", staff_detail, name="staff_detail"),
+    path("staff/<int:id>/details/", staff_details, name="staff_details"),
+
+    path("categories/", category_list, name="category_list"),
+    path("categories/<int:id>/", category_detail, name="category_detail"),
+
+    path("tasks/", task_list, name="task_list"),
+    path("tasks/<int:id>/", task_detail, name="task_detail"),
+
+    path("submit/<str:token>/", submit_view, name="submit"),
 ]
